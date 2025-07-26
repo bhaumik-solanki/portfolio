@@ -1,9 +1,8 @@
 import React from 'react';
 import { GraduationCap, Calendar, MapPin } from 'lucide-react';
-import { mockData } from '../mock';
 
-const Education = () => {
-  const { education } = mockData;
+const Education = ({ data }) => {
+  if (!data || !Array.isArray(data)) return null;
 
   return (
     <section id="education" className="section">
@@ -29,7 +28,7 @@ const Education = () => {
             gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
             gap: 'calc(var(--grid-unit) * 1)'
           }}>
-            {education.map((edu, index) => (
+            {data.map((edu, index) => (
               <div key={edu.id} className="card">
                 <div style={{ 
                   display: 'flex',
