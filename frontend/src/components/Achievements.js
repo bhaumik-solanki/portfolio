@@ -1,9 +1,8 @@
 import React from 'react';
 import { Trophy, Award, Calendar, ExternalLink } from 'lucide-react';
-import { mockData } from '../mock';
 
-const Achievements = () => {
-  const { achievements, certifications } = mockData;
+const Achievements = ({ achievements, certifications }) => {
+  if (!achievements || !certifications) return null;
 
   return (
     <section id="achievements" className="section">
