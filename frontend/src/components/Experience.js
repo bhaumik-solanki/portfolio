@@ -1,9 +1,8 @@
 import React from 'react';
 import { Calendar, MapPin, ArrowRight } from 'lucide-react';
-import { mockData } from '../mock';
 
-const Experience = () => {
-  const { experience } = mockData;
+const Experience = ({ data }) => {
+  if (!data || !Array.isArray(data)) return null;
 
   return (
     <section id="experience" className="section">
@@ -29,7 +28,7 @@ const Experience = () => {
             flexDirection: 'column',
             gap: '32px'
           }}>
-            {experience.map((exp, index) => (
+            {data.map((exp, index) => (
               <div key={exp.id} className="card">
                 <div style={{ 
                   display: 'grid',
