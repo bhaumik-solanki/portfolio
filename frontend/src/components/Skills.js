@@ -1,9 +1,8 @@
 import React from 'react';
 import { Code, Database, Wrench, Layers, Smartphone } from 'lucide-react';
-import { mockData } from '../mock';
 
-const Skills = () => {
-  const { skills } = mockData;
+const Skills = ({ data }) => {
+  if (!data) return null;
 
   const skillCategories = [
     { 
@@ -127,7 +126,7 @@ const Skills = () => {
                   flexWrap: 'wrap',
                   gap: '8px'
                 }}>
-                  {skills[category.key] && skills[category.key].map((skill, skillIndex) => (
+                  {data[category.key] && data[category.key].map((skill, skillIndex) => (
                     <span 
                       key={skillIndex}
                       className="label-small hover-scale"
@@ -156,25 +155,25 @@ const Skills = () => {
           }}>
             <div style={{ textAlign: 'center' }}>
               <div className="text-big" style={{ color: 'var(--accent-primary)' }}>
-                {skills.programming.length}+
+                {data.programming ? data.programming.length : 0}+
               </div>
               <div className="label-small">PROGRAMMING LANGUAGES</div>
             </div>
             <div style={{ textAlign: 'center' }}>
               <div className="text-big" style={{ color: 'var(--accent-primary)' }}>
-                {skills.frontend.length}+
+                {data.frontend ? data.frontend.length : 0}+
               </div>
               <div className="label-small">FRONTEND TECHNOLOGIES</div>
             </div>
             <div style={{ textAlign: 'center' }}>
               <div className="text-big" style={{ color: 'var(--accent-primary)' }}>
-                {skills.backend.length}+
+                {data.backend ? data.backend.length : 0}+
               </div>
               <div className="label-small">BACKEND TECHNOLOGIES</div>
             </div>
             <div style={{ textAlign: 'center' }}>
               <div className="text-big" style={{ color: 'var(--accent-primary)' }}>
-                {skills.databases.length}+
+                {data.databases ? data.databases.length : 0}+
               </div>
               <div className="label-small">DATABASE SYSTEMS</div>
             </div>
