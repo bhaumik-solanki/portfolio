@@ -1,9 +1,8 @@
 import React from 'react';
 import { MapPin, Phone, Mail } from 'lucide-react';
-import { mockData } from '../mock';
 
-const About = () => {
-  const { personal } = mockData;
+const About = ({ data }) => {
+  if (!data) return null;
 
   return (
     <section id="about" className="section">
@@ -35,7 +34,7 @@ const About = () => {
               <div className="card-title">BACKGROUND</div>
               <div className="card-content">
                 <p style={{ marginBottom: '16px' }}>
-                  {personal.bio}
+                  {data.bio}
                 </p>
                 <p>
                   Currently pursuing my final year in Computer Science Engineering, 
@@ -52,15 +51,15 @@ const About = () => {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <Mail size={16} />
-                    <span>{personal.email}</span>
+                    <span>{data.email}</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <Phone size={16} />
-                    <span>{personal.phone}</span>
+                    <span>{data.phone}</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <MapPin size={16} />
-                    <span>{personal.location}</span>
+                    <span>{data.location}</span>
                   </div>
                 </div>
               </div>

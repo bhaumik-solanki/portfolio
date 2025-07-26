@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { Github, ExternalLink, Filter } from 'lucide-react';
-import { mockData } from '../mock';
 
-const Projects = () => {
+const Projects = ({ data }) => {
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const { projects } = mockData;
   
-  const categories = ['All', ...new Set(projects.map(project => project.category))];
+  if (!data || !Array.isArray(data)) return null;
+  
+  const categories = ['All', ...new Set(data.map(project => project.category))];
   
   const filteredProjects = selectedCategory === 'All' 
-    ? projects 
-    : projects.filter(project => project.category === selectedCategory);
+    ? data 
+    : data.filter(project => project.category === selectedCategory);
 
   return (
     <section id="projects" className="section">

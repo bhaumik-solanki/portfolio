@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Github, Linkedin, ExternalLink, Send, User, MessageSquare } from 'lucide-react';
-import { mockData } from '../mock';
+import { contactAPI, apiUtils } from '../services/api';
 
-const Contact = () => {
-  const { personal } = mockData;
+const Contact = ({ data }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     subject: '',
     message: ''
   });
+  const [loading, setLoading] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
 
   const handleChange = (e) => {
     setFormData({
@@ -18,18 +19,36 @@ const Contact = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Mock form submission
-    console.log('Form submitted:', formData);
-    alert('Thank you for your message! I will get back to you soon.');
-    setFormData({
-      name: '',
-      email: '',
-      subject: '',
-      message: ''
-    });
+    setLoading(true);
+    setSubmitStatus(null);
+
+    try {
+      await contactAPI.sendMessage(formData);
+      setSubmitStatus({
+        type: 'success',
+        message: 'Thank you for your message! I will get back to you soon.'
+      });
+      setFormData({
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+      });
+    } catch (error) {
+      console.error('Error sending message:', error);
+      const errorInfo = apiUtils.handleError(error);
+      setSubmitStatus({
+        type: 'error',
+        message: errorInfo.message
+      });
+    } finally {
+      setLoading(false);
+    }
   };
+
+  if (!data) return null;
 
   return (
     <section id="contact" className="section">
@@ -88,7 +107,7 @@ const Contact = () => {
                       EMAIL
                     </div>
                     <div className="text-body">
-                      {personal.email}
+                      {data.email}
                     </div>
                   </div>
                 </div>
@@ -114,7 +133,7 @@ const Contact = () => {
                       PHONE
                     </div>
                     <div className="text-body">
-                      {personal.phone}
+                      {data.phone}
                     </div>
                   </div>
                 </div>
@@ -140,7 +159,7 @@ const Contact = () => {
                       LOCATION
                     </div>
                     <div className="text-body">
-                      {personal.location}
+                      {data.location}
                     </div>
                   </div>
                 </div>
@@ -156,7 +175,7 @@ const Contact = () => {
                   gap: '16px'
                 }}>
                   <a 
-                    href={personal.github}
+                    href={data.github}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover-opacity"
@@ -174,7 +193,7 @@ const Contact = () => {
                     <Github size={20} />
                   </a>
                   <a 
-                    href={personal.linkedin}
+                    href={data.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover-opacity"
@@ -192,7 +211,7 @@ const Contact = () => {
                     <Linkedin size={20} />
                   </a>
                   <a 
-                    href={personal.portfolio}
+                    href={data.portfolio}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover-opacity"
@@ -218,6 +237,24 @@ const Contact = () => {
               <div className="card-title" style={{ marginBottom: '24px' }}>
                 SEND A MESSAGE
               </div>
+              
+              {/* Status Messages */}
+              {submitStatus && (
+                <div style={{
+                  padding: '12px 16px',
+                  marginBottom: '24px',
+                  backgroundColor: submitStatus.type === 'success' ? 'rgba(56, 255, 98, 0.1)' : 'rgba(255, 56, 56, 0.1)',
+                  border: `1px solid ${submitStatus.type === 'success' ? 'var(--accent-primary)' : 'var(--color-error)'}`,
+                  borderRadius: '0'
+                }}>
+                  <div className="text-body" style={{
+                    color: submitStatus.type === 'success' ? 'var(--accent-primary)' : 'var(--color-error)',
+                    fontSize: '14px'
+                  }}>
+                    {submitStatus.message}
+                  </div>
+                </div>
+              )}
               
               <form onSubmit={handleSubmit}>
                 <div style={{ 
@@ -245,6 +282,7 @@ const Contact = () => {
                       value={formData.name}
                       onChange={handleChange}
                       required
+                      disabled={loading}
                       style={{
                         width: '100%',
                         padding: '12px',
@@ -277,6 +315,7 @@ const Contact = () => {
                       value={formData.email}
                       onChange={handleChange}
                       required
+                      disabled={loading}
                       style={{
                         width: '100%',
                         padding: '12px',
@@ -310,6 +349,7 @@ const Contact = () => {
                     value={formData.subject}
                     onChange={handleChange}
                     required
+                    disabled={loading}
                     style={{
                       width: '100%',
                       padding: '12px',
@@ -341,6 +381,7 @@ const Contact = () => {
                     value={formData.message}
                     onChange={handleChange}
                     required
+                    disabled={loading}
                     rows={6}
                     style={{
                       width: '100%',
@@ -358,17 +399,19 @@ const Contact = () => {
                 
                 <button 
                   type="submit"
+                  disabled={loading}
                   className="btn-accent"
                   style={{ 
                     width: '100%',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap: '8px'
+                    gap: '8px',
+                    opacity: loading ? 0.6 : 1
                   }}
                 >
                   <Send size={16} />
-                  SEND MESSAGE
+                  {loading ? 'SENDING...' : 'SEND MESSAGE'}
                 </button>
               </form>
             </div>

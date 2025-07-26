@@ -1,9 +1,8 @@
 import React from 'react';
 import { ArrowDown, Github, Linkedin, Mail, ExternalLink } from 'lucide-react';
-import { mockData } from '../mock';
 
-const Hero = () => {
-  const { personal } = mockData;
+const Hero = ({ data }) => {
+  if (!data) return null;
 
   return (
     <section id="hero" style={{ 
@@ -29,22 +28,22 @@ const Hero = () => {
               marginBottom: '32px',
               lineHeight: '0.9'
             }}>
-              {personal.name.split(' ')[0]}<br/>
-              {personal.name.split(' ')[1]}
+              {data.name.split(' ')[0]}<br/>
+              {data.name.split(' ')[1]}
             </h1>
             
             <div className="text-big" style={{ 
               marginBottom: '32px',
               color: 'var(--text-secondary)'
             }}>
-              {personal.title}
+              {data.title}
             </div>
             
             <div className="text-body" style={{ 
               marginBottom: '48px',
               maxWidth: '600px'
             }}>
-              {personal.bio}
+              {data.bio}
             </div>
             
             {/* CTA Buttons */}
@@ -72,7 +71,7 @@ const Hero = () => {
                 CONNECT:
               </div>
               <a 
-                href={personal.github}
+                href={data.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover-opacity"
@@ -81,7 +80,7 @@ const Hero = () => {
                 <Github size={20} />
               </a>
               <a 
-                href={personal.linkedin}
+                href={data.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover-opacity"
@@ -90,14 +89,14 @@ const Hero = () => {
                 <Linkedin size={20} />
               </a>
               <a 
-                href={`mailto:${personal.email}`}
+                href={`mailto:${data.email}`}
                 className="hover-opacity"
                 style={{ color: 'var(--text-primary)' }}
               >
                 <Mail size={20} />
               </a>
               <a 
-                href={personal.portfolio}
+                href={data.portfolio}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover-opacity"

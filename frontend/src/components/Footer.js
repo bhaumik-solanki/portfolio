@@ -1,9 +1,8 @@
 import React from 'react';
 import { Github, Linkedin, Mail, ExternalLink, Heart, Coffee } from 'lucide-react';
-import { mockData } from '../mock';
 
-const Footer = () => {
-  const { personal } = mockData;
+const Footer = ({ data }) => {
+  if (!data) return null;
 
   return (
     <footer style={{ 
@@ -21,14 +20,14 @@ const Footer = () => {
           {/* Brand Section */}
           <div>
             <div className="header-logo" style={{ marginBottom: '16px' }}>
-              AJ.DEV
+              {data.name.split(' ').map(word => word[0]).join('')}.DEV
             </div>
             <p className="text-body" style={{ 
               marginBottom: '24px',
               color: 'var(--text-secondary)',
               maxWidth: '300px'
             }}>
-              Final year BTech CSE student passionate about building innovative 
+              {data.title} passionate about building innovative 
               solutions with modern technologies.
             </p>
             <div style={{ 
@@ -36,7 +35,7 @@ const Footer = () => {
               gap: '16px'
             }}>
               <a 
-                href={personal.github}
+                href={data.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover-opacity"
@@ -54,7 +53,7 @@ const Footer = () => {
                 <Github size={20} />
               </a>
               <a 
-                href={personal.linkedin}
+                href={data.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover-opacity"
@@ -72,7 +71,7 @@ const Footer = () => {
                 <Linkedin size={20} />
               </a>
               <a 
-                href={`mailto:${personal.email}`}
+                href={`mailto:${data.email}`}
                 className="hover-opacity"
                 style={{ 
                   display: 'flex',
@@ -88,7 +87,7 @@ const Footer = () => {
                 <Mail size={20} />
               </a>
               <a 
-                href={personal.portfolio}
+                href={data.portfolio}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover-opacity"
@@ -139,16 +138,16 @@ const Footer = () => {
               gap: '8px'
             }}>
               <div className="text-body" style={{ fontSize: '14px' }}>
-                {personal.email}
+                {data.email}
               </div>
               <div className="text-body" style={{ fontSize: '14px' }}>
-                {personal.phone}
+                {data.phone}
               </div>
               <div className="text-body" style={{ 
                 fontSize: '14px',
                 color: 'var(--text-secondary)'
               }}>
-                {personal.location}
+                {data.location}
               </div>
             </div>
           </div>
@@ -173,7 +172,7 @@ const Footer = () => {
               fontSize: '14px',
               color: 'var(--text-secondary)'
             }}>
-              © 2025 {personal.name}. Made with
+              © 2025 {data.name}. Made with
             </span>
             <Heart size={16} style={{ color: 'var(--accent-primary)' }} />
             <span className="text-body" style={{ 
