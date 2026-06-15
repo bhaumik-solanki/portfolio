@@ -22,7 +22,7 @@ export function Hero() {
         : ["Full-Stack Developer"];
     const [index, setIndex] = useState(0);
     const headingRef = useRef(null);
-    const imageRef = useRef(null);
+    const imageWrapRef = useRef(null); // plain div ref, not on motion.div
 
     useEffect(() => {
         if (taglines.length < 2) return;
@@ -35,30 +35,35 @@ export function Hero() {
 
     useEffect(() => {
         if (!headingRef.current) return;
+
         const ctx = gsap.context(() => {
+            // Heading drifts up as you scroll out of the hero
             gsap.to(headingRef.current, {
-                y: -60,
+                y: -80,
                 ease: "none",
                 scrollTrigger: {
-                    trigger: headingRef.current,
+                    trigger: "#home", // use the whole section as trigger
                     start: "top top",
-                    end: "+=700",
-                    scrub: true,
+                    end: "bottom top",
+                    scrub: 0.6,
                 },
             });
-            if (imageRef.current) {
-                gsap.to(imageRef.current, {
-                    y: 40,
+
+            // Image drifts down (opposite direction = depth illusion)
+            if (imageWrapRef.current) {
+                gsap.to(imageWrapRef.current, {
+                    y: 60,
                     ease: "none",
                     scrollTrigger: {
-                        trigger: imageRef.current,
+                        trigger: "#home",
                         start: "top top",
-                        end: "+=600",
-                        scrub: true,
+                        end: "bottom top",
+                        scrub: 0.6,
                     },
                 });
             }
         });
+
         return () => ctx.revert();
     }, []);
 
@@ -276,44 +281,48 @@ export function Hero() {
                     </div>
 
                     {/* ── Image ────────────────────────────────────────────────────── */}
-                    <motion.div
-                        ref={imageRef}
-                        initial={{ opacity: 0, scale: 0.96 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{
-                            duration: 0.8,
-                            delay: 0.2,
-                            ease: [0.22, 1, 0.36, 1],
-                        }}
-                        className="hero-image"
-                    >
-                        <div className="hero-image-frame">
-                            <img
-                                src={profile?.avatarUrl || "/myPic.jpg"}
-                                alt={name}
-                                loading="eager"
-                            />
-                            <div
-                                className="hero-image-glow"
-                                aria-hidden="true"
-                            />
-                        </div>
-
-                        {profile?.stats?.length > 0 && (
-                            <div className="hero-stats">
-                                {profile.stats.slice(0, 3).map((s) => (
-                                    <div key={s.label} className="hero-stat">
-                                        <div className="hero-stat-value">
-                                            {s.value}
-                                        </div>
-                                        <div className="hero-stat-label">
-                                            {s.label}
-                                        </div>
-                                    </div>
-                                ))}
+                    {/* Plain div wrapper so GSAP can get the real DOM node */}
+                    <div ref={imageWrapRef} className="hero-image">
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.96 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{
+                                duration: 0.8,
+                                delay: 0.2,
+                                ease: [0.22, 1, 0.36, 1],
+                            }}
+                        >
+                            <div className="hero-image-frame">
+                                <img
+                                    src={profile?.avatarUrl || "/myPic.jpg"}
+                                    alt={name}
+                                    loading="eager"
+                                />
+                                <div
+                                    className="hero-image-glow"
+                                    aria-hidden="true"
+                                />
                             </div>
-                        )}
-                    </motion.div>
+
+                            {profile?.stats?.length > 0 && (
+                                <div className="hero-stats">
+                                    {profile.stats.slice(0, 3).map((s) => (
+                                        <div
+                                            key={s.label}
+                                            className="hero-stat"
+                                        >
+                                            <div className="hero-stat-value">
+                                                {s.value}
+                                            </div>
+                                            <div className="hero-stat-label">
+                                                {s.label}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </motion.div>
+                    </div>
                 </div>
 
                 {/* Scroll indicator */}
