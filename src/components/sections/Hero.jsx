@@ -309,7 +309,7 @@ export function Hero() {
                         >
                             <div className="hero-image-frame">
                                 <img
-                                    src={profile?.avatarUrl || "/myPic.webp"}
+                                    src={profile?.avatarUrl || "/myPic.jpg"}
                                     alt={name}
                                     loading="eager"
                                 />
