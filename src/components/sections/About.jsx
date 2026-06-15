@@ -58,7 +58,7 @@ export function About() {
                         <dl style={{ display: "grid", gap: "1rem" }}>
                             <Row
                                 label="Currently"
-                                value="B.Tech CSE @ NSUT, Delhi"
+                                value="B.Tech CSE Graduate @ NSUT, Delhi"
                             />
                             <Row
                                 label="Focus"
