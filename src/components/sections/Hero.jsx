@@ -23,7 +23,7 @@ export function Hero() {
     const [index, setIndex] = useState(0);
     const headingRef = useRef(null);
     const imageWrapRef = useRef(null); // plain div ref, not on motion.div
-    const rafCtxRef = useRef(null);    // holds gsap ctx created inside rAF
+    const rafCtxRef = useRef(null); // holds gsap ctx created inside rAF
 
     useEffect(() => {
         if (taglines.length < 2) return;
@@ -309,7 +309,7 @@ export function Hero() {
                         >
                             <div className="hero-image-frame">
                                 <img
-                                    src={profile?.avatarUrl || "/myPic.jpg"}
+                                    src={profile?.avatarUrl || "/myPic.webp"}
                                     alt={name}
                                     loading="eager"
                                 />

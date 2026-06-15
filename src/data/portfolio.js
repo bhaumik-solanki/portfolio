@@ -15,7 +15,7 @@ export const portfolioData = {
         phone: "+91 7011747574",
         resumeUrl:
             "https://drive.google.com/file/d/1ZqspOvqztHT3sr32SEX8aGRsvJGaBb7L/view",
-        avatarUrl: "/myPic.jpeg",
+        avatarUrl: "/myPic.webp",
         taglines: [
             "Full-Stack Developer",
             "AI / ML Enthusiast",
