@@ -1,30 +1,19 @@
-import React from "react";
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import About from "./components/About";
-import Skills from "./components/Skills";
-import Projects from "./components/Projects";
-import Experience from "./components/Experience";
-import Education from "./components/Education";
-import Achievements from "./components/Achievements";
-import Contact from "./components/Contact";
-import Footer from "./components/Footer";
+import { Routes, Route } from 'react-router-dom';
+import { ScrollProgress } from './components/ui/ScrollProgress.jsx';
+import HomePage from './pages/HomePage.jsx';
 
-function App() {
+export default function App() {
   return (
-    <div className="min-h-screen bg-dark-bg overflow-x-hidden">
-      <Navbar />
-      <Hero />
-      <About />
-      <Skills />
-      {/* <Projects /> */}
-      {/* <Experience /> */}
-      <Education />
-      {/* <Achievements /> */}
-      <Contact />
-      <Footer />
-    </div>
+    <>
+      <div className="bg-atmosphere" />
+      <div className="bg-grain" />
+      <ScrollProgress />
+
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        {/* Catch-all: redirect anything else back to home */}
+        <Route path="*" element={<HomePage />} />
+      </Routes>
+    </>
   );
 }
-
-export default App;
