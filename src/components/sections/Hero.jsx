@@ -23,6 +23,7 @@ export function Hero() {
     const [index, setIndex] = useState(0);
     const headingRef = useRef(null);
     const imageWrapRef = useRef(null); // plain div ref, not on motion.div
+    const rafCtxRef = useRef(null);    // holds gsap ctx created inside rAF
 
     useEffect(() => {
         if (taglines.length < 2) return;
@@ -36,35 +37,49 @@ export function Hero() {
     useEffect(() => {
         if (!headingRef.current) return;
 
-        const ctx = gsap.context(() => {
-            // Heading drifts up as you scroll out of the hero
-            gsap.to(headingRef.current, {
-                y: -80,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: "#home", // use the whole section as trigger
-                    start: "top top",
-                    end: "bottom top",
-                    scrub: 0.6,
-                },
-            });
-
-            // Image drifts down (opposite direction = depth illusion)
-            if (imageWrapRef.current) {
-                gsap.to(imageWrapRef.current, {
-                    y: 60,
+        // Wait one frame so React has fully painted the layout and
+        // ScrollTrigger can measure the #home section's real position.
+        const raf = requestAnimationFrame(() => {
+            const ctx = gsap.context(() => {
+                // Heading drifts up as you scroll out of the hero
+                gsap.to(headingRef.current, {
+                    y: -80,
                     ease: "none",
                     scrollTrigger: {
-                        trigger: "#home",
+                        trigger: "#home", // use the whole section as trigger
                         start: "top top",
                         end: "bottom top",
                         scrub: 0.6,
                     },
                 });
-            }
+
+                // Image drifts down (opposite direction = depth illusion)
+                if (imageWrapRef.current) {
+                    gsap.to(imageWrapRef.current, {
+                        y: 60,
+                        ease: "none",
+                        scrollTrigger: {
+                            trigger: "#home",
+                            start: "top top",
+                            end: "bottom top",
+                            scrub: 0.6,
+                        },
+                    });
+                }
+
+                // Force ScrollTrigger to re-measure all positions now that
+                // the DOM is fully laid out (fixes stale measurements in React).
+                ScrollTrigger.refresh();
+            });
+
+            // Store ctx on the raf ref so cleanup can reach it
+            rafCtxRef.current = ctx;
         });
 
-        return () => ctx.revert();
+        return () => {
+            cancelAnimationFrame(raf);
+            rafCtxRef.current?.revert();
+        };
     }, []);
 
     const name = profile?.name ?? "Bhaumik Solanki";
@@ -364,7 +379,7 @@ export function Hero() {
             gap: 2.5rem;
           }
           .hero-image {
-            order: -1;
+            // order: -1;
             max-width: 300px;
             margin-inline: auto;
             width: 100%;

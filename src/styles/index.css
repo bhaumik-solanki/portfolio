@@ -71,7 +71,9 @@
 ----------------------------------------------------------------------------- */
 * { box-sizing: border-box; }
 
-html, body, #root { height: 100%; }
+/* height: 100% removed — it constrained the layout and broke GSAP ScrollTrigger
+   position measurements. min-height on #root keeps full-bleed backgrounds. */
+#root { min-height: 100vh; }
 
 body {
   margin: 0;
