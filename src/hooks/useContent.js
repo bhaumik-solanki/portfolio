@@ -37,7 +37,12 @@ export function useSendMessage() {
             const res = await fetch("/.netlify/functions/send-email", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ data }),
+                body: JSON.stringify({
+                    name: data.name,
+                    email: data.email,
+                    subject: data.subject,
+                    message: data.message,
+                }),
             });
             const result = await res.json();
             if (!res.ok)
